@@ -26,3 +26,10 @@ The agent may activate the skill automatically when relevant. You can also expli
 
 ## Important
 The skill intentionally does not hard-code brand tokens. It tells the agent to inspect each repository and reuse its actual tokens/components instead of inventing colors, fonts, spacing, or motion values.
+
+
+## Typography and reusable prompts
+
+The Scops font roles are **Inter** for body/UI, **Manrope** for headings, and **Geist Mono** for technical text. The skill documents how to preserve those roles and the existing desktop sidebar animation, mobile navigation/layout, and settings-card patterns.
+
+Copy/paste Antigravity prompts are collected in [scops-design-system/PROMPTS.md](scops-design-system/PROMPTS.md), including prompts for ordinary builds, greenfield projects, scoped UI changes, sidebar/mobile/settings work, typography-only changes, and an audit-first polish review.
