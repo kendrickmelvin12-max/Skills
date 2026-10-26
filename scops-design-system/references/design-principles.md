@@ -29,3 +29,7 @@ Inspect and preserve design tokens, shared components, typography, spacing rhyth
 
 ## State checklist
 For important controls, consider default, hover, focus-visible, active, selected, disabled, pending/loading, success, empty, error, permission-denied, and offline/retry states where relevant. Implement only states that make sense for the actual component and backend.
+
+
+## Typography
+The Scops source uses **Inter** for body/UI text, **Manrope** for headings, and **Geist Mono** for technical/monospace text. In `src/app/layout.tsx`, these are loaded into `--font-inter`, `--font-manrope`, and `--font-geist-mono`; `src/app/globals.css` maps them to the semantic font roles `--font-sans`, `--font-heading`, and `--font-mono`. Reuse the existing imports and variables rather than loading duplicate fonts. Treat this trio as specific to Scops, not a forced choice for unrelated projects.
