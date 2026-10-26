@@ -210,3 +210,19 @@ Reference components: `src/app/(dashboard)/settings/workspace/page.tsx` and `set
 - Treat them as interaction and composition references, not a mandate to use the exact Scops dimensions in every application.
 - First inspect the target repository's own navigation, responsive breakpoints, tokens, and motion implementation. Translate the principle—compact desktop rail, dedicated mobile navigation, coherent settings cards—into the target project's conventions.
 - If a user asks to preserve a specific animation/layout, do not approximate it from memory. Read the source component and preserve the actual values and behavior.
+
+
+## Typography: Scops font system
+
+Verified in Scops `src/app/layout.tsx` and `src/app/globals.css`. When building Scops itself, preserve this exact system unless the user explicitly requests a change:
+- **Inter** — primary body and UI font, loaded as `--font-inter` and mapped to Tailwind `--font-sans`.
+- **Manrope** — headings/display font, loaded as `--font-manrope` and mapped to `--font-heading`.
+- **Geist Mono** — monospace/technical font, loaded as `--font-geist-mono` and mapped to `--font-mono`.
+
+### Typography rules
+- Inspect the font loader and CSS mappings before changing typography.
+- In Scops, reuse the existing `next/font/google` imports, CSS variables, and semantic font classes. Do not load duplicate fonts or introduce another font package.
+- Use Manrope for headings, Inter for normal interface/body copy, and Geist Mono only for technical text or values that benefit from a monospace treatment.
+- Keep hierarchy deliberate and readable; do not apply one font indiscriminately to every element.
+- Do not replace these fonts with “similar” alternatives merely to simplify implementation.
+- For unrelated future projects, treat this trio as a Scops-inspired reference, not a forced requirement. Inspect and preserve that repository's own font system unless the user explicitly asks to adopt Scops typography.
