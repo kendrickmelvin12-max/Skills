@@ -1,0 +1,168 @@
+---
+name: scops-design-system
+description: Applies Scops-inspired design principles to new UI builds and changes to landing pages, dashboards, forms, settings, responsive layouts, and interaction polish. Use during Antigravity builds to create premium, calm, consistent, accessible interfaces while preserving each repository's existing design tokens, components, responsiveness, and animation timing/easing.
+---
+
+# Scops Design System Skill
+
+## Mission
+Use Scops as the quality bar: premium, calm, intentional SaaS design with strong hierarchy, disciplined spacing, useful feedback, accessible controls, responsive layouts, and purposeful motion. This is a reusable design skill for future builds, not a command to copy Scops branding into every unrelated product. Adapt it to the current repository.
+
+## Non-negotiable rules
+1. Inspect before editing: identify framework, routes, global styles, tokens, fonts, spacing, radii, shadows, breakpoints, component library, icon package, animation system, and neighboring screens.
+2. Extend, don't replace: reuse existing components and tokens. Do not create duplicate button/input/card systems or add a competing design system.
+3. Make the smallest change that satisfies the request. Do not redesign unrelated pages, copy, routes, state, behavior, or layout.
+4. Preserve established animation durations, delays, easing, stagger, scroll triggers, hover transitions, and reduced-motion behavior. Do not remove or replace Framer Motion or another existing motion system casually.
+5. Never invent exact colors, font families, token values, breakpoints, shadows, or radii if the repository defines them. If absent, infer a small coherent set from existing UI and document the inference.
+6. Build real states: loading, empty, error, success, disabled, focus, selected, pending, and permission-limited states where relevant. Do not fake functionality with static data in production paths.
+7. Responsive by default: check narrow mobile, tablet, and desktop; prevent overflow, clipped dialogs, broken navigation, cramped controls, and unreadable tables.
+8. Accessibility is part of polish: semantic HTML, logical headings, visible keyboard focus, labels, keyboard operation, contrast, accessible names, and reduced-motion support.
+9. Respect architecture and security. UI changes must not bypass authorization, server validation, workspace isolation, or established API boundaries.
+10. Finish the details: no dead buttons, unexplained badges, inconsistent icons, arbitrary spacing, placeholder copy, false success messages, or silent failures.
+
+## Design character
+- Premium, not flashy: restrained surfaces, confident typography, deliberate spacing, purposeful contrast, and limited accent use.
+- Clear, not crowded: one dominant purpose per screen and a visible hierarchy.
+- Calm and trustworthy: predictable controls, honest status labels, plain-language errors, and transparent consequences.
+- Purposeful depth: cards, borders, dividers, elevation, and background variation should communicate grouping, not merely decorate.
+- Consistent craft: buttons, inputs, menus, cards, badges, tables, dialogs, and toasts should feel like one system.
+- Content-led: make information understandable before adding ornament.
+
+## Required workflow
+
+### 1. Reconnaissance
+- Inspect the relevant screen and similar existing components.
+- Find actual theme tokens, typography, spacing, breakpoints, icons, and animation conventions.
+- Determine whether this is a new screen, an extension, a bug fix, or a targeted visual adjustment.
+- Identify data-loading, validation, permission, empty/error, and test requirements.
+- If a material decision cannot be inferred safely, ask a concise question. Otherwise proceed with reasonable assumptions.
+
+### 2. Plan
+Define the user's primary goal, main action, secondary actions, information hierarchy, reusable components/tokens, responsive behavior, meaningful states, motion, and accessibility needs. Align new work with neighboring screens; avoid isolated components that look polished but do not fit the product.
+
+### 3. Implement
+- Use shared components and design tokens first.
+- Use the existing icon package; don't mix emoji, unrelated icon libraries, and handmade icons.
+- Keep one clear primary action; make secondary actions quieter and destructive actions unmistakable.
+- Use meaningful action labels, not vague “Click here” labels.
+- Provide immediate pending/success/error feedback and prevent duplicate submissions.
+- Design for long names, long emails, empty values, large numbers, and user-generated content.
+- Avoid hard-coded mock data in production flows.
+- Keep components understandable; don't over-abstract simple screens.
+- Avoid adding dependencies unless the current stack cannot reasonably support the requirement.
+
+### 4. Motion and interactions
+Motion should communicate hierarchy, state change, continuity, or feedback—not delay the user.
+- In existing projects preserve duration, easing, delay, stagger, trigger, and transition conventions.
+- Do not introduce competing animation systems or remove existing motion without explicit approval.
+- Avoid layout-shifting animations unless the current design intentionally uses them.
+- Keep feedback immediate; avoid excessive bounce, elastic movement, parallax, and long entrance animations in productivity UI.
+- Respect `prefers-reduced-motion` and existing accessibility patterns.
+- In a new project without a motion system, use subtle, fast transitions and consistent motion tokens rather than arbitrary per-element values.
+
+### 5. Verify
+- Run available relevant lint, typecheck, tests, and build commands.
+- Inspect the changed interface at mobile, tablet, and desktop widths.
+- Check keyboard focus and keyboard operation for important controls.
+- Exercise relevant loading, empty, error, success, disabled, and permission-denied states.
+- Verify buttons, forms, dialogs, dropdowns, tabs, links, and navigation actually work.
+- Check for new console/build warnings and regressions on neighboring screens.
+- Do not claim a check passed unless it was run; do not claim visual verification without browser/screenshot inspection.
+
+## Visual standards
+
+### Layout and hierarchy
+- Use a clear page title and concise supporting text when needed.
+- Keep primary actions easy to find without making every action equally prominent.
+- Use spacing and headings before adding extra cards.
+- Maintain consistent content width, alignment, gutters, and vertical rhythm.
+- Keep dense screens scannable with purposeful grouping and restrained labels.
+
+### Typography
+- Reuse the repository's fonts and type scale.
+- Use size, weight, line height, and contrast to create hierarchy; don't bold everything.
+- Keep body text readable and line lengths controlled.
+- Avoid all-caps for long labels/body copy and avoid tiny low-contrast text for important information.
+- Use tabular numerals for metrics/money only if consistent with the project's conventions.
+
+### Surfaces, color, and themes
+- Use cards when content forms a meaningful unit; avoid unnecessary nested cards.
+- Use borders, shadows, radii, gradients, blur, glow, and glass effects only if the existing design language supports them.
+- Read actual theme tokens before adding colors.
+- Prefer semantic tokens (background, foreground, muted, border, primary, destructive, success, warning, info) where available.
+- Never convey status by color alone; pair it with text, icon, shape, or accessible labeling.
+- Check contrast and component boundaries in dark/light modes where supported.
+
+### Forms
+- Every input needs a label; a placeholder is not a label.
+- Explain required fields and validation expectations.
+- Place validation near the field and preserve input after recoverable errors.
+- Show pending state and prevent accidental duplicate submissions.
+- Make success and the next step clear.
+- Use appropriate input types, autocomplete, and accessible descriptions.
+- Do not disable submission without explaining why.
+
+### Data-heavy screens
+- Make status, owner/client, date, key metric, and next action scannable where relevant.
+- Format dates, currency, counts, and empty values consistently.
+- Use progressive disclosure instead of displaying every field at once.
+- Reflow tables into a usable mobile alternative instead of shrinking them until unreadable.
+- Distinguish live data from demo data; keep filters and sorting visible and reversible.
+
+### Empty/loading/error states
+- Empty states explain what is missing and provide a useful next action.
+- Loading states preserve layout where practical to reduce layout shift.
+- Errors explain what happened in plain language and how to recover.
+- Success feedback is concise and must reflect confirmed success, not merely a click.
+- Long-running operations need meaningful progress/status, not just an indefinite spinner.
+
+### Responsive behavior
+- Design small screens deliberately; don't simply shrink desktop.
+- Use fluid widths and content-aware wrapping.
+- Keep touch targets comfortable and separated.
+- Ensure menus, dialogs, sidebars, navigation, and action bars work on touch devices.
+- Avoid accidental horizontal overflow.
+- Ensure sticky UI does not cover content or keyboard focus.
+- Test long content, zoom, and intermediate widths when feasible.
+
+## Scops-inspired product principles
+These principles come from the Scops product context; apply them as general interaction lessons without forcing Scops-specific branding on unrelated products.
+- Make the current state and source of truth visible.
+- Separate facts from suggestions, drafts, pending actions, and approved decisions.
+- Explain consequences before meaningful actions.
+- Preserve history for important agreements and decisions; never silently overwrite significant state.
+- Use respectful, human language rather than blame or intimidation.
+- Keep users in control: suggestions can be reviewed, edited, accepted, or discarded.
+- Make the next useful step visible in review queues, empty states, and pending states.
+- Be honest about capabilities and outcomes; never imply something happened unless the system confirms it.
+
+## AI UI rules
+- Distinguish generated drafts from saved, approved, or sent content.
+- Provide edit, regenerate, copy, discard, and confirmation actions as appropriate.
+- Show relevant source context or reasons for classifications/recommendations.
+- Do not style uncertain AI output as guaranteed truth.
+- Require explicit confirmation before sending external communication or performing consequential mutations.
+- Preserve user work after recoverable errors.
+- Use status text that accurately describes what the system did.
+
+## Technical and product boundaries
+- Do not change authentication, authorization, billing, security rules, API contracts, or schemas as a side effect of visual work.
+- Do not bypass server-side validation or permission checks to make an interaction appear functional.
+- Never expose secrets in client-side code.
+- Do not invent endpoints or fake unimplemented capabilities.
+- If the design requires missing backend behavior, report the dependency rather than hiding it with mock UI.
+- Avoid broad refactors during visual work unless required and authorized.
+- The user's explicit design direction takes precedence over the default visual style, except for accessibility, security, and technical constraints.
+
+## Definition of done
+A task is complete only when the requested outcome is implemented, existing conventions are reused, responsive behavior and relevant states are covered, keyboard/accessibility basics are respected, motion and unrelated behavior are preserved, no dead controls or false success states remain in the changed path, relevant checks are run, and limitations are reported honestly.
+
+## Required final report
+Report:
+1. Changed screens/components and visible behavior.
+2. Existing tokens/components/patterns reused.
+3. Responsive/accessibility checks performed.
+4. Motion preserved or exact motion changes made and why.
+5. Commands/tests actually run and their results.
+6. Remaining issues or limitations.
+Keep it concise and factual.
