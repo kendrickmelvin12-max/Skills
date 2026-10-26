@@ -166,3 +166,47 @@ Report:
 5. Commands/tests actually run and their results.
 6. Remaining issues or limitations.
 Keep it concise and factual.
+
+
+## Scops reference patterns: desktop sidebar, mobile shell, and settings cards
+
+When working in the Scops repository, use the current implementation as the source of truth. These are patterns observed in the current codebase, not universal hard-coded rules for every future product. Before copying them, re-check the latest components and tokens.
+
+### Desktop sidebar behavior
+Reference component: `src/components/dashboard/Sidebar.tsx`.
+- The sidebar is desktop-only (`hidden lg:flex`), sticky at the top, full viewport height, vertically structured, and clipped horizontally to prevent labels spilling during width changes.
+- It uses a compact icon rail around 72px wide and expands to about 256px on hover. The current component derives its visible state from hover; inspect the latest implementation before changing interaction semantics.
+- The brand mark changes from the compact “S” to “Scops” as the sidebar expands.
+- Navigation icons stay in place while text labels fade in/out through Framer Motion `AnimatePresence`; labels must not wrap during the transition.
+- The active route has a narrow primary-color marker using a shared `layoutId`, so movement between active items feels continuous rather than independently re-animating each marker.
+- Navigation rows use compact, consistent spacing, rounded corners, and a muted default state with a soft accent hover/active surface.
+- Footer actions (upgrade, feedback, settings, logout) share the same row geometry and icon alignment. The upgrade action is intentionally emphasized; logout gets a destructive hover treatment.
+- Preserve the existing animation library and transition configuration. Do not add arbitrary duration/easing values, replace the active-marker layout animation, or alter the collapsed/expanded widths unless explicitly requested.
+- Test pointer hover, pointer leave, keyboard focus, route changes, long labels, reduced motion, and whether the sidebar behaves sensibly on touch devices. Do not assume hover is available on mobile.
+
+### Mobile dashboard shell and navigation
+Reference components: `src/components/dashboard/MobileBottomNav.tsx`, `TopNav.tsx`, and `src/app/(dashboard)/layout.tsx`.
+- Mobile uses a dedicated bottom tab bar instead of squeezing the desktop sidebar onto a narrow screen. The bar is fixed to the viewport bottom, uses a translucent background/backdrop blur, a subtle top border, and safe-area padding.
+- The current bottom navigation presents four compact destinations (Home, Projects, Templates, Settings) with icon-over-label layout. Keep labels readable and consistent; avoid adding too many destinations or reducing touch targets to fit.
+- The active tab uses a shared Framer Motion `layoutId` pill/highlight with the current spring settings (`stiffness: 400, damping: 30`). Preserve these exact settings unless the user explicitly asks to change the motion.
+- The desktop sidebar is hidden below the large breakpoint, while the mobile bottom navigation is hidden at medium widths and above. Verify the current breakpoints in the actual code before modifying them.
+- The top navigation is sticky and compact (currently 56px high), with a translucent background and backdrop blur. On mobile, search is icon-only and opens the existing command palette; desktop uses the wider search control and keyboard shortcut hint.
+- Main content includes bottom safe-area/navigation padding on mobile so the bottom bar does not cover the final card, button, or form field. Preserve and verify the `pb-safe-nav` / safe-area utilities and any route-specific chrome exceptions.
+- Ensure dialogs, sheets, dropdowns, toasts, FABs, and keyboard-open states do not collide with the fixed bottom bar. Test at narrow widths and with device safe areas.
+- Some routes intentionally hide the standard shell. Preserve route-specific exceptions and do not force the bottom bar onto focused builder/new-project flows without checking intended behavior.
+
+### Settings page and card design
+Reference components: `src/app/(dashboard)/settings/workspace/page.tsx` and `settings/preferences/page.tsx`.
+- Settings pages use a centered, full-width content column with a maximum width around `max-w-3xl`, consistent vertical page spacing, a clear title, and short supporting copy.
+- The main settings surface uses the shared theme tokens: `bg-card`, `border-border/40`, `rounded-2xl`, and a restrained `shadow-sm`. Avoid inventing a separate visual treatment for each settings section.
+- Card padding is responsive (currently `p-4 sm:p-8`); section groups use clear headings, generous but consistent spacing, and subtle dividers such as `border-border/40`.
+- Theme choices use a responsive one-column-to-three-column grid, large clickable selection tiles, clear selected/unselected border states, and icons contained in restrained tinted circles. Keep selected state clear without relying on color alone.
+- Forms use shared Label/Input/Select/Textarea components, labels above controls, and consistent vertical spacing. Destructive operations should use an explicit confirmation dialog.
+- Save/reset actions are grouped in a footer area with a subtle muted surface and top border; the preferences screen currently uses a sticky footer. Check viewport height, keyboard focus, and small-screen wrapping so actions remain reachable without covering content.
+- Use the actual project's dark/light semantic tokens. Do not hard-code the currently observed color values into components; update tokens only when explicitly asked to change the design system.
+- Settings interactions must accurately reflect persistence. Do not use fake delayed saves or success toasts when a backend write has not completed successfully; report any mock/incomplete behavior instead of polishing it into a misleading flow.
+
+### How to use these patterns in other projects
+- Treat them as interaction and composition references, not a mandate to use the exact Scops dimensions in every application.
+- First inspect the target repository's own navigation, responsive breakpoints, tokens, and motion implementation. Translate the principle—compact desktop rail, dedicated mobile navigation, coherent settings cards—into the target project's conventions.
+- If a user asks to preserve a specific animation/layout, do not approximate it from memory. Read the source component and preserve the actual values and behavior.
